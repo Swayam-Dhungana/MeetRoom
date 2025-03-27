@@ -1,10 +1,11 @@
-import 'dotenv/config'
+// import 'dotenv/config'
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import prisma from "../../db/db.config";
 import bcrypt from "bcryptjs";
 import { sign, verify } from "hono/jwt";
+import { setCookie } from "hono/cookie";
 const authRoute=new Hono()
 
 const signUpSchema=z.object({
@@ -18,6 +19,13 @@ const signInSchema=z.object({
     email: z.string().email(),
     password: z.string().min(8),
 })
+
+const resetSchema=z.object({
+    newPassword: z.string().min(8),
+    oldPassword: z.string().min(8)
+})
+
+//signup route completed
 
 authRoute.post('/signup',zValidator('json',signUpSchema),async(c)=>{
     const data=c.req.valid('json')
@@ -45,9 +53,13 @@ authRoute.post('/signup',zValidator('json',signUpSchema),async(c)=>{
 })
 
 
+//login route completed
+
 authRoute.post('/login',zValidator('json',signInSchema),async(c)=>{
     try{
-        const {email, password}=c.req.valid('json')
+        const data=c.req.valid('json')
+        if(!data)return c.json({success:false, msg:'invalid data formate'},400)
+        const {email, password}=await c.req.json()
         const existingUser=await prisma.user.findUnique({
             where:{
                 email:email
@@ -61,10 +73,29 @@ authRoute.post('/login',zValidator('json',signInSchema),async(c)=>{
         }
         const token=await sign(payload, Bun.env.SECRET_KEY as string)
         if(!token)return c.json({success:false, msg: 'Some internal problem occured'})
+        setCookie(c,'auth-token',token,{
+            httpOnly:true,
+            path:'/',
+            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 100),
+            sameSite: 'strict',
+    })
         return c.json({success:true, msg:'Logged in successfully', token})
     }
     catch{
         return c.json({success:false, msg:'Failed to login'}, 500)
+    }
+})
+
+
+
+
+//Todo-reset password
+authRoute.post('/resetPassword', zValidator('json',resetSchema),async(c)=>{
+    try{
+        const {newPassword, oldPassword}=c.req.valid('json')
+        
+    }catch{
+        return c.json({success:false, msg:'Failed to reset password'}, 500)
     }
 })
 
