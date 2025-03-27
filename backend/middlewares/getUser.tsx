@@ -9,8 +9,7 @@ try{
         return c.json({success: false, msg:'Unauthorized'},401)    
     }
     const user=await verify(token,Bun.env.SECRET_KEY as string)
-    c.set('userId', user.id)
-    console.log('token found')
+    c.set('userId', user )
     await next()
 }catch{
     return c.json({success: false, msg: 'Unauthorized'}, 401)

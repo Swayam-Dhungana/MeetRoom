@@ -15,7 +15,7 @@ app.use(
     allowHeaders: ["Content-Type", "Authorization"],
   })
 );
-app.use('/user', getUser)
+app.use('/user/*', getUser)
 app.route('/auth',authRoute)
 app.route('/user',userRouter)
 

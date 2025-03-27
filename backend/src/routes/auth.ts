@@ -90,13 +90,5 @@ authRoute.post('/login',zValidator('json',signInSchema),async(c)=>{
 
 
 
-//Todo-reset password
-authRoute.post('/resetPassword', getUser,async(c)=>{
-    try{
-        return c.json({success:true, msg:'Password reset successfully'})
-    }catch{
-        return c.json({success:false, msg:'Failed to reset password'}, 500)
-    }
-})
 
 export default authRoute
