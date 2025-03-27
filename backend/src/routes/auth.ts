@@ -6,6 +6,7 @@ import prisma from "../../db/db.config";
 import bcrypt from "bcryptjs";
 import { sign, verify } from "hono/jwt";
 import { setCookie } from "hono/cookie";
+import getUser from "../../middlewares/getUser";
 const authRoute=new Hono()
 
 const signUpSchema=z.object({
@@ -90,10 +91,9 @@ authRoute.post('/login',zValidator('json',signInSchema),async(c)=>{
 
 
 //Todo-reset password
-authRoute.post('/resetPassword', zValidator('json',resetSchema),async(c)=>{
+authRoute.post('/resetPassword', getUser,async(c)=>{
     try{
-        const {newPassword, oldPassword}=c.req.valid('json')
-        
+        return c.json({success:true, msg:'Password reset successfully'})
     }catch{
         return c.json({success:false, msg:'Failed to reset password'}, 500)
     }
