@@ -6,7 +6,6 @@ import prisma from "../../db/db.config";
 import bcrypt from "bcryptjs";
 import { sign, verify } from "hono/jwt";
 import { setCookie } from "hono/cookie";
-import getUser from "../../middlewares/getUser";
 const authRoute=new Hono()
 
 const signUpSchema=z.object({
@@ -21,10 +20,7 @@ const signInSchema=z.object({
     password: z.string().min(8),
 })
 
-const resetSchema=z.object({
-    newPassword: z.string().min(8),
-    oldPassword: z.string().min(8)
-})
+
 
 //signup route completed
 
@@ -42,11 +38,13 @@ authRoute.post('/signup',zValidator('json',signUpSchema),async(c)=>{
             const hashedPass=await bcrypt.hash(password, 10)
             const newUser= await prisma.user.create({
                 data:{
-                    name: username,
+                    username: username,
                     email: email,
                     password: hashedPass
                 }
             })
+            //Todo Email verification
+
             return c.json({success: true, msg: 'User created successfully', user: newUser})
         }catch{
             return c.json({success:false, msg: 'Failed to create user'}, 500)
