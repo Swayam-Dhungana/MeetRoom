@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { BsApple } from "react-icons/bs";
 import { FaXTwitter } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 import { useAuthStore } from "../store/authUser";
 
 const SignUp = () => {
@@ -49,7 +48,7 @@ const SignUp = () => {
     if (isDisabled) return;
     
     await signup({ username: creds.username, email: creds.email, password: creds.password });
-    setCreds({ username: "", email: "", password: "", confirmPass: "" }); // ✅ Reset all fields
+    setCreds({ username: "", email: "", password: "", confirmPass: "" });
   };
 
   return (

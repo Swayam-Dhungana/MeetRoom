@@ -28,7 +28,7 @@ const Login = () => {
       })
   }, []);
   
-  const [creds, setcreds] = useState({ username: "", email: "", password: "" });
+  const [creds, setcreds] = useState({  email: "", password: "" });
   const handleSubmit = async (e: any) => {
     setLoading(true);
    try{
@@ -50,7 +50,8 @@ const Login = () => {
         toast.error(json.msg || json.error.issues[0].message)
       }
    }catch{
-    setLoading(false)
+     setLoading(false)
+     setcreds({email:'', password:''})
       toast.error('Error Logging In')
    }
   };

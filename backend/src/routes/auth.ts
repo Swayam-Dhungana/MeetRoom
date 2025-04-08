@@ -67,9 +67,9 @@ authRoute.post('/login',zValidator('json',signInSchema),async(c)=>{
         if(!existingUser)return c.json({success: false, msg: 'Invalid username or password'},401)
         const isValidPassword=await bcrypt.compare(password, existingUser.password)
         if(!isValidPassword)return c.json({success:false, msg: 'Invalid username or password'},401)
-        const payload={
-            id: existingUser.id
-        }
+            const payload={
+        id: existingUser.id
+    }
         const token=await sign(payload, Bun.env.SECRET_KEY as string)
         if(!token)return c.json({success:false, msg: 'Some internal problem occured'})
         setCookie(c,'auth-token',token,{
@@ -78,7 +78,10 @@ authRoute.post('/login',zValidator('json',signInSchema),async(c)=>{
             expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 100),
             sameSite: 'strict',
     })
-        return c.json({success:true, msg:'Logged in successfully', token})
+    const keyRemove=['password','email']
+    const sendUser=Object.entries(existingUser).filter(([key])=>!keyRemove.includes(key))
+    console.log(sendUser)
+        return c.json({success:true, msg:'Logged in successfully',user: existingUser, token})
     }
     catch{
         return c.json({success:false, msg:'Failed to login'}, 500)
