@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "../store/authUser";
 import toast from "react-hot-toast";
 const Login = () => {
-  const {  setLoading, loading } = useAuthStore();
+  const {  setLoading, loading,setUser } = useAuthStore();
   const router = useRouter();
   useEffect(() => {
     fetch("http://localhost:3000/user/valid-user", {
@@ -42,8 +42,15 @@ const Login = () => {
       })
       const json=await response.json()
       setLoading(false)
-      if(json.success){
-        console.log(json)
+      if(json.success)
+      {
+        const user={
+          id:json.user[0][1],
+          username:json.user[1][1],
+          verified:json.user[2][1]
+        }
+        console.log(user)
+        setUser(user)
         router.push('/')
         toast.success(json.msg)
       }else{

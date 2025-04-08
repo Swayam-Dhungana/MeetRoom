@@ -1,15 +1,24 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
+
+type User={
+  id: String,
+  username: String,
+  verified: Boolean
+}
 interface AuthState {
-  user: any;
+  user: User|null;
   loading: boolean;
+  setUser:(user: User)=> void;
   setLoading:(loadingStatus: any)=>void;
   signup: (creds: { username: string; email: string; password: string }) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  hello:null,
   user: null,
+  setUser:(user)=>{
+    set({user})
+  },
   loading: false,
   signup: async (data) => {
     try {

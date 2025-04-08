@@ -80,10 +80,9 @@ authRoute.post('/login',zValidator('json',signInSchema),async(c)=>{
     })
     const keyRemove=['password','email']
     const sendUser=Object.entries(existingUser).filter(([key])=>!keyRemove.includes(key))
-    console.log(sendUser)
-        return c.json({success:true, msg:'Logged in successfully',user: existingUser, token})
+        return c.json({success:true, msg:'Logged in successfully',user: sendUser, token})
     }
-    catch{
+    catch{  
         return c.json({success:false, msg:'Failed to login'}, 500)
     }
 })
