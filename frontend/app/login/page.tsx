@@ -70,7 +70,7 @@ const Login = () => {
 
   return (
     <div className="w-full h-screen flex items-center justify-center">
-      <div className="w-[90%] max-w-sm md:max-w-md lg:max-w-md p-5 bg-gray-900 flex-col flex items-center gap-3 rounded-xl shadow-slate-500 shadow-lg">
+      <div className="w-[90%] max-w-sm md:max-w-md lg:max-w-md p-5 bg-gray-900 flex-col flex items-center gap-3 rounded-xl shadow-slate-500 shadow-sm">
         <img src="/logo.png" alt="logo" className="w-12 md:w-16" />
         <h1 className="text-lg md:text-xl font-semibold">Welcome Back</h1>
 

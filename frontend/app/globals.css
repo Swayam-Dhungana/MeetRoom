@@ -1,6 +1,6 @@
 @import "tailwindcss";
 body {
     @apply bg-no-repeat bg-cover bg-center min-h-screen;
-    background-image: url("/wallpaper.png");
+    background-color: #0A0F1F;
     color: #ffff;
   }

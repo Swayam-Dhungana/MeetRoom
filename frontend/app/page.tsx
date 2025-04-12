@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
-
+import Navbar from './components/Navbar';
 const page = () => {
 const router=useRouter()
   useEffect(() => {
@@ -21,7 +21,9 @@ const router=useRouter()
       })
   }, []);
   return (
-    <div> </div>
+    <div className='grid grid-rows-[]'>
+      <Navbar/>
+    </div>
   )
 }
 

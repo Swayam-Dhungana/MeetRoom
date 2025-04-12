@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import prisma from "../../db/db.config";
-
+import { deleteCookie } from "hono/cookie"
 type UserContext = {
     Variables: {
         userId: { id: number };
@@ -44,6 +44,12 @@ userRouter.get('/valid-user',async(c)=>{
     if(!user)return c.json({success:false})
     return c.json({success:true,user})
 })
+
+userRouter.get("/removeCookie", async (c) => {
+    deleteCookie(c, "auth-token", { path: "/" });
+    return c.json({ success: true, msg: "Logged Out Successfully" });
+  });
+  
 
 
 export default userRouter;
